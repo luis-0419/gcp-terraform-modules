@@ -55,7 +55,6 @@ output "peering_details" {
       name                                  = google_compute_network_peering.local_to_peer.name
       id                                    = google_compute_network_peering.local_to_peer.id
       state                                 = google_compute_network_peering.local_to_peer.state
-      auto_create_routes                    = google_compute_network_peering.local_to_peer.auto_create_routes
       export_custom_routes                  = google_compute_network_peering.local_to_peer.export_custom_routes
       import_custom_routes                  = google_compute_network_peering.local_to_peer.import_custom_routes
     }
@@ -63,7 +62,6 @@ output "peering_details" {
       name                                  = google_compute_network_peering.peer_to_local[0].name
       id                                    = google_compute_network_peering.peer_to_local[0].id
       state                                 = google_compute_network_peering.peer_to_local[0].state
-      auto_create_routes                    = google_compute_network_peering.peer_to_local[0].auto_create_routes
       export_custom_routes                  = google_compute_network_peering.peer_to_local[0].export_custom_routes
       import_custom_routes                  = google_compute_network_peering.peer_to_local[0].import_custom_routes
     } : null
