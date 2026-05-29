@@ -48,17 +48,12 @@ resource "google_container_cluster" "primary" {
 #   }
 
   # Logging
-  dynamic "logging_service" {
-    for_each = var.enable_log_sink ? ["logging.googleapis.com/kubernetes"] : ["none"]
-    content {
-      logging_service = logging_service.value
-    }
-  }
+  logging_service = var.enable_log_sink ? "logging.googleapis.com/kubernetes" : "none"
 
 #   labels = var.labels
 
   depends_on = [
-    google_client_config.default,
+    data.google_client_config.default,
   ]
 
   lifecycle {
