@@ -11,13 +11,21 @@ resource "google_container_cluster" "primary" {
   initial_node_count       = 1
 
   # Rangos secundarios de IP para Kubernetes
+  # Opción 1: Usar nombres de rangos secundarios existentes en la subred
   dynamic "ip_allocation_policy" {
-    for_each = var.enable_ip_alias ? [1] : []
+    for_each = var.enable_ip_alias && var.cluster_secondary_range_name != "" ? [1] : []
     content {
-      cluster_secondary_range_name  = var.cluster_secondary_range_name != "" ? var.cluster_secondary_range_name : null
-      services_secondary_range_name = var.services_secondary_range_name != "" ? var.services_secondary_range_name : null
-      cluster_ipv4_cidr_block       = var.cluster_ipv4_cidr_block != "" ? var.cluster_ipv4_cidr_block : null
-      services_ipv4_cidr_block      = var.services_ipv4_cidr_block != "" ? var.services_ipv4_cidr_block : null
+      cluster_secondary_range_name  = var.cluster_secondary_range_name
+      services_secondary_range_name = var.services_secondary_range_name
+    }
+  }
+
+  # Opción 2: Auto-generar CIDR blocks si no hay rangos secundarios definidos
+  dynamic "ip_allocation_policy" {
+    for_each = var.enable_ip_alias && var.cluster_secondary_range_name == "" ? [1] : []
+    content {
+      cluster_ipv4_cidr_block  = var.cluster_ipv4_cidr_block
+      services_ipv4_cidr_block = var.services_ipv4_cidr_block
     }
   }
 
