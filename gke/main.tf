@@ -14,8 +14,10 @@ resource "google_container_cluster" "primary" {
   dynamic "ip_allocation_policy" {
     for_each = var.enable_ip_alias ? [1] : []
     content {
-      cluster_secondary_range_name  = var.cluster_secondary_range_name
-      services_secondary_range_name = var.services_secondary_range_name
+      cluster_secondary_range_name  = var.cluster_secondary_range_name != "" ? var.cluster_secondary_range_name : null
+      services_secondary_range_name = var.services_secondary_range_name != "" ? var.services_secondary_range_name : null
+      cluster_ipv4_cidr_block       = var.cluster_ipv4_cidr_block != "" ? var.cluster_ipv4_cidr_block : null
+      services_ipv4_cidr_block      = var.services_ipv4_cidr_block != "" ? var.services_ipv4_cidr_block : null
     }
   }
 

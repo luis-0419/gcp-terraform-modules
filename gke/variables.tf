@@ -76,15 +76,27 @@ variable "enable_ip_alias" {
 }
 
 variable "cluster_secondary_range_name" {
-  description = "Nombre del rango secundario para pods"
+  description = "Nombre del rango secundario para pods (dejarlo vacío para auto-generar CIDR)"
   type        = string
-  default     = "pods"
+  default     = ""
 }
 
 variable "services_secondary_range_name" {
-  description = "Nombre del rango secundario para servicios"
+  description = "Nombre del rango secundario para servicios (dejarlo vacío para auto-generar CIDR)"
   type        = string
-  default     = "services"
+  default     = ""
+}
+
+variable "cluster_ipv4_cidr_block" {
+  description = "CIDR block automático para pods (ej: 10.4.0.0/14). Se usa si no hay nombre de rango secundario"
+  type        = string
+  default     = "10.4.0.0/14"
+}
+
+variable "services_ipv4_cidr_block" {
+  description = "CIDR block automático para servicios (ej: 10.0.0.0/20). Se usa si no hay nombre de rango secundario"
+  type        = string
+  default     = "10.0.0.0/20"
 }
 
 variable "release_channel" {
