@@ -10,10 +10,10 @@ output "forwarding_rule_ip_address" {
 
 output "backend_service_id" {
   description = "ID del servicio backend"
-  value       = google_compute_backend_service.backend.id
+  value       = google_compute_region_backend_service.backend.id
 }
 
 output "health_check_id" {
   description = "ID del health check"
-  value       = google_compute_health_check.tcp.id
+  value       = google_compute_region_health_check.tcp.id
 }
