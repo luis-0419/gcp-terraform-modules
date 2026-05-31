@@ -62,6 +62,8 @@ resource "google_container_cluster" "primary" {
 
 #   labels = var.labels
 
+  deletion_protection = false
+
   depends_on = [
     data.google_client_config.default,
   ]
