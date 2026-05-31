@@ -11,7 +11,7 @@ variable "load_balancer_name" {
 variable "protocol" {
   description = "Protocolo: HTTP, HTTPS, TCP, UDP"
   type        = string
-  default     = "HTTP"
+  default     = "TCP"
 }
 
 variable "port" {
