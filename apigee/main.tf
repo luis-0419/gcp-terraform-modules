@@ -12,7 +12,6 @@ resource "google_apigee_organization" "organization" {
 }
 
 resource "google_apigee_environment" "environment" {
-#   project_id  = var.project_id
   org_id      = google_apigee_organization.organization.id
   name        = var.environment_name
   display_name = var.environment_name
