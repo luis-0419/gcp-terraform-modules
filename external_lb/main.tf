@@ -35,5 +35,10 @@ resource "google_compute_forwarding_rule" "default" {
   port_range    = var.port
   ports         = [var.port]
   backend_service = google_compute_backend_service.backend.id
-  labels        = var.labels
+  
+  # Conectar a la VPC especificada
+  network      = var.network_name != null ? var.network_name : null
+  subnetwork   = var.subnetwork_name != null ? var.subnetwork_name : null
+  
+  labels = var.labels
 }

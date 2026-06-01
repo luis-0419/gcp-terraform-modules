@@ -68,6 +68,18 @@ variable "timeout_sec" {
   default     = 30
 }
 
+variable "network_name" {
+  description = "Nombre de la VPC donde están los backends"
+  type        = string
+  default     = null
+}
+
+variable "subnetwork_name" {
+  description = "Nombre de la subred (opcional)"
+  type        = string
+  default     = null
+}
+
 variable "labels" {
   description = "Etiquetas para el recurso"
   type        = map(string)
