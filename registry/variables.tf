@@ -40,20 +40,6 @@ variable "enable_immutable_tags" {
   default     = false
 }
 
-variable "cleanup_policies" {
-  description = "Políticas de limpieza automática para imágenes"
-  type = list(object({
-    id     = string       # Identificador único de la política
-    action = string       # DELETE
-    condition = object({
-      tag_state       = optional(string)      # TAGGED, UNTAGGED, ANY
-      tag_prefixes    = optional(list(string)) # ["v1.", "release-"]
-      older_than_days = optional(number)
-    })
-  }))
-  default = []
-}
-
 variable "labels" {
   description = "Etiquetas para el repositorio"
   type        = map(string)

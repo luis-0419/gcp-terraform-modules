@@ -17,28 +17,8 @@ resource "google_artifact_registry_repository" "registry" {
   labels = var.labels
 }
 
-# Políticas de limpieza automática (se crean como recursos separados)
-resource "google_artifact_registry_repository_cleanup_policy_attachment" "cleanup" {
-  count = length(var.cleanup_policies) > 0 ? 1 : 0
-
-  project    = var.project_id
-  location   = var.region
-  repository = google_artifact_registry_repository.registry.repository_id
-
-  dynamic "cleanup_policies" {
-    for_each = var.cleanup_policies
-    content {
-      id     = cleanup_policies.value.id
-      action = cleanup_policies.value.action
-
-      condition {
-        tag_state       = try(cleanup_policies.value.condition.tag_state, null)
-        tag_prefixes    = try(cleanup_policies.value.condition.tag_prefixes, null)
-        older_than_days = try(cleanup_policies.value.condition.older_than_days, null)
-      }
-    }
-  }
-}
+# Nota: Las políticas de limpieza deben configurarse a través de gcloud CLI o la consola
+# Terraform tiene soporte limitado para cleanup_policies en Artifact Registry
 
 # Configuración del escaneo de vulnerabilidades (solo para DOCKER)
 resource "google_artifact_registry_repository_iam_member" "docker_reader" {

@@ -27,12 +27,11 @@ variable "security_rules" {
     rate_limit = optional(object({
       conform_action = string
       exceed_action  = string
-      rate_limit_options = object({
-        conform_action             = string
-        exceed_action              = string
-        enforce_on_key             = string
-        requests_per_interval      = number
-        interval_sec               = number
+      enforce_on_key = string
+      ban_duration_sec = number
+      rate_limit_threshold = object({
+        count        = number
+        interval_sec = number
       })
     }))
   }))

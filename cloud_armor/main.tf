@@ -32,14 +32,17 @@ resource "google_compute_security_policy" "policy" {
       }
 
       dynamic "rate_limit_options" {
-        for_each = rule.value.rate_limit != null ? [rule.value.rate_limit.rate_limit_options] : []
+        for_each = rule.value.rate_limit != null ? [rule.value.rate_limit] : []
         content {
-          conform_action             = rate_limit_options.value.conform_action
-          exceed_action              = rate_limit_options.value.exceed_action
-          enforce_on_key             = rate_limit_options.value.enforce_on_key
-          requests_per_interval      = rate_limit_options.value.requests_per_interval
-          interval_sec               = rate_limit_options.value.interval_sec
-          ban_duration_sec           = 600
+          conform_action   = rate_limit_options.value.conform_action
+          exceed_action    = rate_limit_options.value.exceed_action
+          enforce_on_key   = rate_limit_options.value.enforce_on_key
+          ban_duration_sec = rate_limit_options.value.ban_duration_sec
+
+          rate_limit_threshold {
+            count        = rate_limit_options.value.rate_limit_threshold.count
+            interval_sec = rate_limit_options.value.rate_limit_threshold.interval_sec
+          }
         }
       }
     }
