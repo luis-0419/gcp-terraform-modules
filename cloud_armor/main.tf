@@ -17,22 +17,22 @@ resource "google_compute_security_policy" "policy" {
 #   }
 
   # Rules adicionales
-  dynamic "rules" {
+  dynamic "rule" {
     for_each = var.security_rules
     content {
-      action      = rules.value.action
-      priority    = rules.value.priority
-      description = rules.value.description
+      action      = rule.value.action
+      priority    = rule.value.priority
+      description = rule.value.description
 
       match {
-        versioned_expr = rules.value.match.versioned_expr
+        versioned_expr = rule.value.match.versioned_expr
         expr {
-          expression = rules.value.match.expr.expression
+          expression = rule.value.match.expr.expression
         }
       }
 
       dynamic "rate_limit_options" {
-        for_each = rules.value.rate_limit != null ? [rules.value.rate_limit.rate_limit_options] : []
+        for_each = rule.value.rate_limit != null ? [rule.value.rate_limit.rate_limit_options] : []
         content {
           conform_action             = rate_limit_options.value.conform_action
           exceed_action              = rate_limit_options.value.exceed_action
@@ -45,14 +45,5 @@ resource "google_compute_security_policy" "policy" {
     }
   }
 
-  # Defensive DDoS
-  dynamic "adaptive_protection_config" {
-    for_each = var.enable_layer7_ddos_defense ? [1] : []
-    content {
-      layer_7_ddos_defense_config {
-        enable          = true
-        rule_visibility = "STANDARD"
-      }
-    }
-  }
+  # Nota: adaptive_protection_config se gestiona mediante google_compute_security_policy_rule
 }

@@ -77,7 +77,7 @@ resource "google_compute_disk" "additional_disks" {
   name    = each.value.name
   type    = each.value.type
   zone    = var.zone
-  size_gb = each.value.size_gb
+  size    = each.value.size_gb
 
   labels = var.labels
 }

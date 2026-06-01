@@ -14,12 +14,6 @@ variable "description" {
   default     = ""
 }
 
-variable "enable_layer7_ddos_defense" {
-  description = "Habilitar defensa contra DDoS de capa 7"
-  type        = bool
-  default     = true
-}
-
 variable "security_rules" {
   description = "Reglas de seguridad"
   type = list(object({

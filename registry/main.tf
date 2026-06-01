@@ -14,25 +14,11 @@ resource "google_artifact_registry_repository" "registry" {
   # Configuración de limpieza automática (se gestiona mediante google_artifact_registry_cleanup_policies)
   # Las cleanup_policies se crean como recursos separados
 
-  # Configuración de repositorio virtual (opcional)
-  dynamic "virtual_repository_config" {
-    for_each = var.virtual_repository_config != null ? [var.virtual_repository_config] : []
-    content {
-      dynamic "upstreams" {
-        for_each = virtual_repository_config.value.upstreams
-        content {
-          repository_id = upstreams.value.repository_id
-          priority      = upstreams.value.priority
-        }
-      }
-    }
-  }
-
   labels = var.labels
 }
 
-# Políticas de limpieza automática
-resource "google_artifact_registry_cleanup_policies" "policies" {
+# Políticas de limpieza automática (se crean como recursos separados)
+resource "google_artifact_registry_repository_cleanup_policy_attachment" "cleanup" {
   count = length(var.cleanup_policies) > 0 ? 1 : 0
 
   project    = var.project_id

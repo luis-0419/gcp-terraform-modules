@@ -71,14 +71,3 @@ variable "kms_key_name" {
   type        = string
   default     = null
 }
-
-variable "virtual_repository_config" {
-  description = "Configuración para repositorio virtual (upstream)"
-  type = object({
-    upstreams = list(object({
-      repository_id = string
-      priority      = number
-    }))
-  })
-  default = null
-}
