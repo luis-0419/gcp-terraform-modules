@@ -14,13 +14,16 @@ resource "google_service_networking_connection" "private_service_connection" {
   depends_on              = [google_compute_global_address.private_service_connection]
 }
 
-resource "google_compute_private_service_connection_endpoint" "psc_endpoint" {
-  project = var.project_id
-  name    = var.service_connection_name
-  region  = "us-central1"
-
-  network                 = var.network_id
-  service_attachment     = "projects/${var.project_id}/regions/us-central1/serviceAttachments/${var.service_name}"
+resource "google_compute_forwarding_rule" "psc_endpoint" {
+  project               = var.project_id
+  name                  = "${var.service_connection_name}-psc-endpoint"
+  region                = "us-central1"
+  load_balancing_scheme = "INTERNAL"
+  
+  network               = var.network_id
+  target                = "projects/${var.project_id}/regions/us-central1/serviceAttachments/${var.service_name}"
+  
+  allow_global_access = false
 
   depends_on = [
     google_service_networking_connection.private_service_connection

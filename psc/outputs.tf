@@ -1,11 +1,16 @@
 output "psc_endpoint_id" {
   description = "ID del endpoint PSC"
-  value       = google_compute_private_service_connection_endpoint.psc_endpoint.id
+  value       = google_compute_forwarding_rule.psc_endpoint.id
 }
 
 output "psc_endpoint_name" {
   description = "Nombre del endpoint PSC"
-  value       = google_compute_private_service_connection_endpoint.psc_endpoint.name
+  value       = google_compute_forwarding_rule.psc_endpoint.name
+}
+
+output "psc_endpoint_ip_address" {
+  description = "Dirección IP del endpoint PSC"
+  value       = google_compute_forwarding_rule.psc_endpoint.ip_address
 }
 
 output "reserved_ip_range_name" {
