@@ -18,7 +18,7 @@ resource "google_compute_forwarding_rule" "psc_endpoint" {
   project               = var.project_id
   name                  = "${var.service_connection_name}-psc-endpoint"
   region                = "us-central1"
-  load_balancing_scheme = "INTERNAL"
+  # load_balancing_scheme = "INTERNAL"
   
   network               = var.network_id
   subnetwork = var.subnetwork_id
