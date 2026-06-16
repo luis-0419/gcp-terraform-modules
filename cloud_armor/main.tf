@@ -3,18 +3,17 @@ resource "google_compute_security_policy" "policy" {
   name        = var.policy_name
   description = var.description
 
-#   # Regla por defecto
-#   rules {
-#     action      = "allow"
-#     priority    = 65534
-#     description = "Regla por defecto"
-#     match {
-#       versioned_expr = "SOC_V2"
-#       expr {
-#         expression = "true"
-#       }
-#     }
-#   }
+rule {
+    action      = "allow" # o "deny", dependiendo de tu postura de seguridad
+    priority    = 2147483647
+    description = "Regla por defecto - Permitir todo"
+    match {
+      versioned_expr = "SRC_IPS_V1"
+      config {
+        src_ip_ranges = ["*"]
+      }
+    }
+  }
 
   # Rules adicionales
   dynamic "rule" {
