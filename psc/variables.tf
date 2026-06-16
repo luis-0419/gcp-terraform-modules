@@ -35,3 +35,10 @@ variable "labels" {
   type        = map(string)
   default     = {}
 }
+
+variable "subnetwork_id" {
+  description = "ID de la subred (opcional)"
+  type        = string
+  default     = null
+  
+}

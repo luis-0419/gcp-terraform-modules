@@ -21,6 +21,7 @@ resource "google_compute_forwarding_rule" "psc_endpoint" {
   load_balancing_scheme = "INTERNAL"
   
   network               = var.network_id
+  subnetwork = var.subnetwork_id
   target                = "projects/${var.project_id}/regions/us-central1/serviceAttachments/${var.service_name}"
   
   allow_global_access = false
