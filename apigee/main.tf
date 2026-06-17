@@ -3,6 +3,7 @@ resource "google_apigee_organization" "organization" {
   project_id         = var.project_id
   display_name       = var.organization_name
   description        = var.description
+  billing_type       = "PAYG"
 
 #   properties = var.enable_mtls ? {
 #     features = "mTLS,DebugMask,EnvConfig,SharedFlow,MessageFlow,MessageProcessor"

@@ -41,7 +41,7 @@ variable "environment_description" {
 variable "environment_type" {
   description = "Tipo de entorno: ENVIRONMENTS_SAMPLE, ENVIRONMENTS_FULL"
   type        = string
-  default     = "ENVIRONMENTS_FULL"
+  default     = "BASE"
 }
 
 variable "environment_properties" {
