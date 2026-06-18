@@ -85,3 +85,8 @@ variable "labels" {
   type        = map(string)
   default     = {}
 }
+
+variable "region" {
+  type = string
+  default = "us-central1"
+}
