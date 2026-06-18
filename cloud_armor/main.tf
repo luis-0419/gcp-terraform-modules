@@ -1,10 +1,64 @@
+# resource "google_compute_security_policy" "policy" {
+#   project     = var.project_id
+#   name        = var.policy_name
+#   description = var.description
+
+# rule {
+#     action      = "allow" # o "deny", dependiendo de tu postura de seguridad
+#     priority    = 2147483647
+#     description = "Regla por defecto - Permitir todo"
+#     match {
+#       versioned_expr = "SRC_IPS_V1"
+#       config {
+#         src_ip_ranges = ["*"]
+#       }
+#     }
+#   }
+
+#   # Rules adicionales
+#   dynamic "rule" {
+#     for_each = var.security_rules
+#     content {
+#       action      = rule.value.action
+#       priority    = rule.value.priority
+#       description = rule.value.description
+
+#       match {
+#         versioned_expr = rule.value.match.versioned_expr
+#         expr {
+#           expression = rule.value.match.expr.expression
+#         }
+#       }
+
+#       dynamic "rate_limit_options" {
+#         for_each = rule.value.rate_limit != null ? [rule.value.rate_limit] : []
+#         content {
+#           conform_action   = rate_limit_options.value.conform_action
+#           exceed_action    = rate_limit_options.value.exceed_action
+#           enforce_on_key   = rate_limit_options.value.enforce_on_key
+#           ban_duration_sec = rate_limit_options.value.ban_duration_sec
+
+#           rate_limit_threshold {
+#             count        = rate_limit_options.value.rate_limit_threshold.count
+#             interval_sec = rate_limit_options.value.rate_limit_threshold.interval_sec
+#           }
+#         }
+#       }
+#     }
+#   }
+
+#   # Nota: adaptive_protection_config se gestiona mediante google_compute_security_policy_rule
+# }
+
+
 resource "google_compute_security_policy" "policy" {
   project     = var.project_id
   name        = var.policy_name
   description = var.description
 
-rule {
-    action      = "allow" # o "deny", dependiendo de tu postura de seguridad
+  # Regla por defecto
+  rule {
+    action      = "allow" 
     priority    = 2147483647
     description = "Regla por defecto - Permitir todo"
     match {
@@ -15,7 +69,7 @@ rule {
     }
   }
 
-  # Rules adicionales
+  # Reglas adicionales dinámicas
   dynamic "rule" {
     for_each = var.security_rules
     content {
@@ -25,8 +79,21 @@ rule {
 
       match {
         versioned_expr = rule.value.match.versioned_expr
-        expr {
-          expression = rule.value.match.expr.expression
+
+        # Renderiza 'config' solo si la regla incluye rangos de IP
+        dynamic "config" {
+          for_each = can(rule.value.match.config.src_ip_ranges) ? [rule.value.match.config] : []
+          content {
+            src_ip_ranges = config.value.src_ip_ranges
+          }
+        }
+
+        # Renderiza 'expr' solo si la regla incluye una expresión (WAF)
+        dynamic "expr" {
+          for_each = can(rule.value.match.expr.expression) ? [rule.value.match.expr] : []
+          content {
+            expression = expr.value.expression
+          }
         }
       }
 
@@ -46,6 +113,4 @@ rule {
       }
     }
   }
-
-  # Nota: adaptive_protection_config se gestiona mediante google_compute_security_policy_rule
 }
